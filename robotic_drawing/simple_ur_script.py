@@ -10,6 +10,35 @@ import Rhino.Geometry as rg
 MAX_ACCEL = 1.5
 MAX_VELOCITY = 2
 
+
+def move_l_2(plane_to, accel, vel, time, blend):
+    """
+    Function that returns UR script for linear movement in tool-space.
+
+    Args:
+        plane_to: Rhino.Geometry Plane. A target plane for calculating pose (in UR base coordinate system)
+        accel: tool accel in m/s^2
+        vel: tool speed in m/s
+
+    Returns:
+        script: UR script
+    """
+
+    # Check acceleration and velocity are non-negative and below a set limit
+    accel = MAX_ACCEL if (abs(accel) >MAX_ACCEL) else abs(accel)
+    vel = MAX_VELOCITY if (abs(vel) > MAX_VELOCITY) else abs(vel)
+
+    _matrix = rg.Transform.PlaneToPlane(rg.Plane.WorldXY,plane_to)
+    _axis_angle= utils.matrix_to_axis_angle(_matrix)
+    # Create pose data
+    _pose = [plane_to.OriginX/1000, plane_to.OriginY/1000, plane_to.OriginZ/1000,_axis_angle[0], _axis_angle[1], _axis_angle[2]]
+    _pose_fmt = "p[" + ("%.4f,"*6)[:-1]+"]"
+    _pose_fmt = _pose_fmt%tuple(_pose)
+    # Format UR script
+    script = "movel(%s, a = %.2f, v = %.2f, t = %.2f, r = %.2f)\n"%(_pose_fmt,accel,vel,time,blend)
+    return script
+
+
 def move_l(plane_to, accel, vel):
     """
     Function that returns UR script for linear movement in tool-space.
@@ -149,15 +178,15 @@ def sleep(time):
 def set_digital_out(id, signal):
     """
     Function that returns UR script for setting digital out
-    
+
     Args:
         id: int. Input id number
         signal: boolean. signal level - on or off
-    
+
     Returns:
         script: UR script
     """
-    
+
     # Format UR script
     script = "set_digital_out(%s,%s)\n"%(id,signal)
     return script
