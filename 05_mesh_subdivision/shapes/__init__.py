@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .shape import Shape
 from .box import Box
 from .cylinder import Cylinder
 from .cone import Cone

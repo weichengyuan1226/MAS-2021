@@ -35,7 +35,7 @@ def mesh_subdivide_pyramid(mesh, k=1, height=1.0):
     return subd
 
 
-def mesh_subdivide_tapered(mesh, heights=1.0, ratios=0.5, doCaps=False, k=1):
+def mesh_subdivide_tapered(mesh, k=1, height=1.0, ratio=0.5, doCap=False ):
     """
     Subdivide a mesh extruding its faces tapered like a window by creating an
     offset face and quads between every original edge and the
@@ -60,14 +60,7 @@ def mesh_subdivide_tapered(mesh, heights=1.0, ratios=0.5, doCaps=False, k=1):
     """
     subd = mesh.copy()
 
-    if heights is not list:
-        heights = [heights] * len(list(mesh.faces()))
-    if ratios is not list:
-        ratios = [ratios] * len(list(mesh.faces()))
-    if doCaps is not list:
-        doCaps = [doCaps] * len(list(mesh.faces()))
-
-    for fkey, height, ratio, doCap in zip( mesh.faces(), heights, ratios, doCaps):
+    for fkey in mesh.faces():
         centroid = mesh.face_centroid(fkey)
         centroid_vector = Vector(*centroid)
         normal = mesh.face_normal(fkey)
