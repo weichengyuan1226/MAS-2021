@@ -101,7 +101,7 @@ def pyramid_face(mesh, fkey, height=0.0):
     return new_keys
 
 
-def taper_face(mesh, fkey, height=0.0, ratio=0.5, keep_original=False):
+def taper_face(mesh, fkey, height=0.0, ratio=0.5, doCap=False, keep_original=False):
     centroid = mesh.face_centroid(fkey)
     centroid_vector = Vector(*centroid)
     normal = mesh.face_normal(fkey)
@@ -127,8 +127,9 @@ def taper_face(mesh, fkey, height=0.0, ratio=0.5, keep_original=False):
         new_face_key = mesh.add_face([v, next_v, next_new_v, new_v])
         new_keys.append(new_face_key)
 
-    top_face_key = mesh.add_face(new_verts)
-    new_keys.append(top_face_key)
+    if doCap:
+        top_face_key = mesh.add_face(new_verts)
+        new_keys.append(top_face_key)
     if keep_original == False:
         del mesh.face[fkey]
     return new_keys
