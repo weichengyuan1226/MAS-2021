@@ -143,8 +143,8 @@ for c in genotype:
 L_System = lines</item>
                     <item name="Description" type_name="gh_string" type_code="10">GhPython provides a Python script component</item>
                     <item name="EditorLocation" type_name="gh_drawing_point" type_code="30">
-                      <X>1045</X>
-                      <Y>962</Y>
+                      <X>966</X>
+                      <Y>311</Y>
                     </item>
                     <item name="EditorSize" type_name="gh_drawing_size" type_code="32">
                       <W>2616</W>
@@ -491,8 +491,8 @@ for i in range(iterations):
     lines = newLines</item>
                     <item name="Description" type_name="gh_string" type_code="10">GhPython provides a Python script component</item>
                     <item name="EditorLocation" type_name="gh_drawing_point" type_code="30">
-                      <X>2067</X>
-                      <Y>1687</Y>
+                      <X>1213</X>
+                      <Y>509</Y>
                     </item>
                     <item name="EditorSize" type_name="gh_drawing_size" type_code="32">
                       <W>1451</W>
