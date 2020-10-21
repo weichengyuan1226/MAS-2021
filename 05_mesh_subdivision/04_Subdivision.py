@@ -8,6 +8,27 @@ import mysubdivision as msd
 
 import random
 
+
+# empty dictionary
+my_dict = {}
+
+# dictionary with mixed keys
+my_dict = { 'name': 'John', 1: [2, 4, 3] }
+
+# Output: John
+print(my_dict['name'])
+
+# Output: [2, 4, 3]
+print(my_dict.get('1'))
+
+# update value
+my_dict['name'] = "Mary"
+print (my_dict)
+
+# add item
+my_dict['address'] = 'Zurich'
+print (my_dict)
+
 def subdivide_by_ftype(mesh):
 
     fkeys = list(mesh.faces())
