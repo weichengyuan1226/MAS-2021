@@ -19,7 +19,7 @@ my_dict = { 'name': 'John', 1: [2, 4, 3] }
 print(my_dict['name'])
 
 # Output: [2, 4, 3]
-print(my_dict.get('1'))
+print(my_dict.get(1))
 
 # update value
 my_dict['name'] = "Mary"
