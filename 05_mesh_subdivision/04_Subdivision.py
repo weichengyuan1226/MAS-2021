@@ -9,25 +9,32 @@ import mysubdivision as msd
 import random
 
 
-# empty dictionary
-my_dict = {}
+# #empty list
+# my_list = []
+# #empty dictionary
+# my_dict = {}
 
-# dictionary with mixed keys
-my_dict = { 'name': 'John', 1: [2, 4, 3] }
+# my_list = ["John"]
 
-# Output: John
-print(my_dict['name'])
+# my_dict = { "name" : "John", 1 : [2,4,3]  }
 
-# Output: [2, 4, 3]
-print(my_dict.get(1))
+# #get value
+# print (my_list[0])
 
-# update value
-my_dict['name'] = "Mary"
-print (my_dict)
+# print (my_dict["name"])
+# print (my_dict.get(1))
 
-# add item
-my_dict['address'] = 'Zurich'
-print (my_dict)
+# #update value
+# my_list[0] = "Mary"
+# my_dict["name"] = "Mary"
+# #create a new key/value
+# # not posiible : my_list[1] = "Zurich"
+# my_dict["adress"] = "Zurich"
+
+# print my_dict
+
+# # if attr["z"]>0:
+# #     attr["z"] *=1.8
 
 def subdivide_by_ftype(mesh):
 
@@ -75,10 +82,6 @@ def subdivide_by_ftype(mesh):
                     mesh.face_attribute(key, 'ftype', 'panel')
             else:
                 mesh.face_attribute(fk, 'ftype', 'panel')
-
-
-        else:
-            pass
 
 
 mesh = Mesh()
