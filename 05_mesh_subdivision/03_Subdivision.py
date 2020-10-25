@@ -1,4 +1,4 @@
-import math
+import math, compas
 from mysubdivision import taper_face, my_mesh_thicken
 from shapes import Sphere
 from compas.datastructures import Mesh
@@ -9,7 +9,6 @@ from compas.geometry import angle_vectors
 from compas_rhino import unload_modules
 unload_modules('shapes')
 unload_modules('mysubdivision')
-
 
 def math_map_list(values, toMin=0, toMax=1):
     """
