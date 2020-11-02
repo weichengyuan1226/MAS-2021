@@ -198,6 +198,7 @@ class Brick(object):
         self.width = width
         self.height = height
 
+
     def dimensions(self):
         """returns the dimenesnions of the brick:
 
@@ -223,19 +224,6 @@ class Brick(object):
         pt2 : top point at possitive X,
         pt3 : top point at possitive X and poossitive Y]
 
-        """
-        """
-        pt_0 = rg.Point3d(0, 0, 0)
-        pt_1 = rg.Point3d(0, self.width, 0)
-        pt_2 = rg.Point3d(self.length, 0, 0)
-        pt_3 = rg.Point3d(self.length, self.width, 0)
-
-        pt_4 = rg.Point3d(0, 0, self.height)
-        pt_5 = rg.Point3d(0, self.width, self.height)
-        pt_6 = rg.Point3d(self.length, 0, self.height)
-        pt_7 = rg.Point3d(self.length, self.width, self.height)
-
-        b_pts = [pt_0, pt_1, pt_2, pt_3, pt_4, pt_5, pt_6, pt_7]
         """
 
         pt_0 = rg.Point3d(0, 0, 0)
@@ -379,6 +367,8 @@ class Wall():
 
     def brick_possitions(self):
         """Genrates a Rhino Geometry plane for each brick
+
+        This is where the design of the wall is created.
 
         Returns
         ----------
