@@ -63,7 +63,8 @@ class Fabrication():
     def set_robot_base_plane_from_pts(self):
 
         pt_0 = rg.Point3d(327, 230, 0)  # base plane origin
-        pt_1 = rg.Point3d(499, 230, 0)  # point on base plane positive x direction
+        # point on base plane positive x direction
+        pt_1 = rg.Point3d(499, 230, 0)
         pt_2 = rg.Point3d(499, 499, 0)  # point on base plane positive xy
 
         robot_base = rg.Plane(pt_0, pt_1-pt_0, pt_2-pt_0)
@@ -71,14 +72,15 @@ class Fabrication():
 
     def rhino_to_robot_space(self, in_plane):
         plane = in_plane.Clone()
-        _r_matrix = rg.Transform.PlaneToPlane(rg.Plane.WorldXY, self.set_robot_base_plane_from_pts())
+        _r_matrix = rg.Transform.PlaneToPlane(
+            rg.Plane.WorldXY, self.set_robot_base_plane_from_pts())
         plane.Transform(_r_matrix)
         return plane
 
-    def robot_transformation(self):#LOAD robot model
-        _robot_matrix = rg.Transform.PlaneToPlane(self.set_robot_base_plane_from_pts(), rg.Plane.WorldXY)
+    def robot_transformation(self):  # LOAD robot model
+        _robot_matrix = rg.Transform.PlaneToPlane(
+            self.set_robot_base_plane_from_pts(), rg.Plane.WorldXY)
         return _robot_matrix
-
 
     def pickup_brick(self, pick_up_plane):
         """Example of a method's documentation.
@@ -95,7 +97,6 @@ class Fabrication():
 
         safe_plane = pick_up_plane.Clone()
         safe_plane.Translate(rg.Vector3d(0, 0, safe_distance))
-
 
         self.script += ur.move_l(safe_plane, self.accel, self.vel)
         self.way_planes.append(safe_plane)
@@ -135,30 +136,25 @@ class Fabrication():
 
         return None
 
-    def procedure(self):
+    def procedure(self, transform=True):
 
         self.tcp()
         robot_planes = []
 
-        pick_up_plane = rg.Plane(rg.Point3d(0, 450, 0), rg.Vector3d.XAxis, rg.Vector3d.YAxis)
+        if transform:
+            pick_up_plane = rg.Plane(rg.Point3d(
+                0, 450, 0), rg.Vector3d.XAxis, rg.Vector3d.YAxis)
+            for plane in (self.brick_planes):
+                robot_planes.append(self.rhino_to_robot_space(plane))
 
-        for plane in (self.brick_planes):
-            robot_planes.append(self.rhino_to_robot_space(plane))
+        else:
+            pick_up_plane = self.rhino_to_robot_space(
+            rg.Plane(rg.Point3d(0, 450, 0), rg.Vector3d.XAxis, rg.Vector3d.YAxis))
+            robot_planes = self.brick_planes
 
-        for plane in (robot_planes):
-            self.pickup_brick(pick_up_plane)
-            self.place_brick(plane)
-
-    def visualize_procedure(self):
-        robot_planes = []
-
-        pick_up_plane = rg.Plane(rg.Point3d(0, 450, 0), rg.Vector3d.XAxis, rg.Vector3d.YAxis)
-
-        for plane in (robot_planes):
-            self.pickup_brick(pick_up_plane)
-            self.place_brick(plane)
-
-
+            for plane in (robot_planes):
+                self.pickup_brick(pick_up_plane)
+                self.place_brick(plane)
 
     def visualize(self):
         """this funktion visualizes the planes wich are sent to the robot"""
@@ -171,9 +167,8 @@ class Fabrication():
             crv.append(pt)
 
         curve = rg.NurbsCurve.Create(False, 1, crv)
-
+        print(curve)
         return self.way_planes, curve
-
 
     def send(self):
         """
@@ -333,7 +328,7 @@ class Brick(object):
         srf_0 = rg.NurbsSurface.CreateFromPoints(
             [pt_0, pt_1, pt_3, pt_2], 2, 2, 1, 1)
         srf_1 = rg.NurbsSurface.CreateFromPoints(
-           [pt_0, pt_1, pt_4, pt_5], 2, 2, 1, 1)
+            [pt_0, pt_1, pt_4, pt_5], 2, 2, 1, 1)
         srf_2 = rg.NurbsSurface.CreateFromPoints(
             [pt_4, pt_5, pt_7, pt_6], 2, 2, 1, 1)
         srf_3 = rg.NurbsSurface.CreateFromPoints(
@@ -377,6 +372,7 @@ class Wall():
         self.x_cnt = x_cnt
         self.z_cnt = z_cnt
 
+
         self.b_length = Brick.REFERENCE_LENGTH
         self.b_width = Brick.REFERENCE_WIDTH
         self.b_height = Brick.REFERENCE_HEIGHT
@@ -391,8 +387,8 @@ class Wall():
         """
 
         brick_planes = []
-        for i in range(self.z_cnt):       #layer count
-            for j in range(self.x_cnt):   #layer length
+        for i in range(self.z_cnt):  # layer count
+            for j in range(self.x_cnt):  # layer length
 
                 if i % 2 == 0:
                     x_pos = j * (self.b_length+1)
@@ -425,16 +421,18 @@ class Wall():
         for plane in self.brick_possitions():
             myBrick = Brick(plane)
             planes.append(myBrick.base_plane())
-            #geo.extend(myBrick.surface())
+            # geo.extend(myBrick.surface())
 
             geo.append(myBrick.mesh())
 
-        visualizeFabrication = Fabrication(brick_planes=self.brick_possitions())
-        visualizeFabrication.visualize_procedure()
+        visualizeFabrication = Fabrication(
+            brick_planes=self.brick_possitions())
+        visualizeFabrication.procedure(transform=False)
         robot_matrix = visualizeFabrication.robot_transformation()
 
-        return geo, visualizeFabrication.visualize(), robot_matrix
+        print(robot_matrix)
 
+        return geo, visualizeFabrication.visualize(), robot_matrix
 
     def fabrication_model(self):
         """Generates all the data necessary for the robotic fabrication
