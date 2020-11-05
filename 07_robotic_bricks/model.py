@@ -294,7 +294,8 @@ class Brick(object):
         ----------
         mesh_brick : Mesh
         """
-        mesh_brick = rg.Mesh.CreateFromBox(self.pts(), 3, 3, 3)
+
+        mesh_brick = rg.Mesh.CreateFromBox(self.pts(), 1, 1, 1)
         mesh_brick.Transform(self.transformation())
 
         return mesh_brick
