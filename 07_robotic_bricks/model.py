@@ -20,45 +20,6 @@ class Fabrication():
         self.script += ur.set_tcp_by_angles(
             0.0, 0.0, 74.0, m.radians(0.0), m.radians(180.0), m.radians(0))
 
-    def set_robot_base_plane(self):
-
-        rs.MessageBox(
-            "move robot to base plane origin, press OK when there", 0)
-        data = c.listen_to_robot(ROBOT_IP)
-        pose = data['pose']
-        pt_1 = rg.Point3d(pose[0]*1000, pose[1]*1000, pose[2]*1000)
-        print(pt_1)
-        rs.MessageBox(
-            "move robot to base plane positive x direction, press OK when there", 0)
-        data = c.listen_to_robot(ROBOT_IP)
-        pose = data['pose']
-        pt_2 = rg.Point3d(pose[0]*1000, pose[1]*1000, pose[2]*1000)
-        print(pt_2)
-        rs.MessageBox(
-            "move robot to base plane positive y direction, press OK when there", 0)
-        data = c.listen_to_robot(robot_ip)
-        pose = data['pose']
-        pt_3 = rg.Point3d(pose[0]*1000, pose[1]*1000, pose[2]*1000)
-        print(pt_3)
-
-        robot_base = rg.Plane(pt_1, pt_2-pt_1, pt_3-pt_1)
-        text_file = open("robot_base.txt", "w")
-        text_file.write(str(robot_base.Origin)+"," +
-                        str(robot_base.XAxis)+","+str(robot_base.YAxis))
-        text_file.close()
-
-    # def load_robot_base_plane(self):
-        text_file = open("robot_base.txt", "r")
-        string = text_file.read()
-        values = string.split(",")
-        values = [float(value) for value in values]
-
-        base_origin = rg.Point3d(values[0], values[1], values[2])
-        base_x_axis = rg.Vector3d(values[3], values[4], values[5])
-        base_y_axis = rg.Vector3d(values[6], values[7], values[8])
-
-        base_plane = rg.Plane(base_origin, base_x_axis, base_y_axis)
-        return base_plane
 
     def set_robot_base_plane_from_pts(self):
 
@@ -162,12 +123,10 @@ class Fabrication():
         crv = []
 
         for plane in self.way_planes:
-            #print (plane.Origin)
             pt = plane.Origin
             crv.append(pt)
 
         curve = rg.NurbsCurve.Create(False, 1, crv)
-        print(curve)
         return self.way_planes, curve
 
     def send(self):
@@ -335,7 +294,6 @@ class Brick(object):
         ----------
         mesh_brick : Mesh
         """
-
         mesh_brick = rg.Mesh.CreateFromBox(self.pts(), 3, 3, 3)
         mesh_brick.Transform(self.transformation())
 
@@ -420,7 +378,6 @@ class Wall():
         visualizeFabrication.procedure(transform=False)
         robot_matrix = visualizeFabrication.robot_transformation()
 
-        print(robot_matrix)
 
         return geo, visualizeFabrication.visualize(), robot_matrix
 
@@ -439,3 +396,4 @@ class Wall():
         script = myFabrication.send()
 
         return script, myFabrication.visualize()
+
