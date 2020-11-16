@@ -80,11 +80,11 @@ class LevelSlicer(object):
 
 
 ##############################################################
-DATA = os.path.join(os.path.dirname(__file__), 'data_cylinder')
-MODEL = 'cylinder_uneven.obj'
+# DATA = os.path.join(os.path.dirname(__file__), '1_data_cylinder')
+# MODEL = 'cylinder_uneven.obj'
 
-# DATA = os.path.join(os.path.dirname(__file__), 'data_bunny')
-# MODEL = 'bunny.obj'
+DATA = os.path.join(os.path.dirname(__file__), '2_data_bunny')
+MODEL = 'bunny.obj'
 
 OUTPUT_DIR = utils.get_output_directory(DATA)  # creates 'output' folder if it doesn't already exist
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     print('here')
     mesh = Mesh.from_obj(os.path.join(DATA, MODEL))
 
-    level_slicer = LevelSlicer(mesh, 2.0)
+    level_slicer = LevelSlicer(mesh, 32.0)
     level_slicer.compute()
 
     for i, key in enumerate(level_slicer.sorted_points):

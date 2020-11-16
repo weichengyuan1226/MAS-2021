@@ -11,8 +11,6 @@ from compas_slicer.print_organization import add_safety_printpoints
 from compas_slicer.print_organization import set_linear_velocity
 from compas_slicer.print_organization import set_blend_radius
 from compas_slicer.print_organization import CurvedPrintOrganizer
-from compas_slicer.post_processing import generate_brim
-from compas_viewers.objectviewer import ObjectViewer
 import time
 
 logger = logging.getLogger('logger')
@@ -25,6 +23,7 @@ OBJ_INPUT_NAME = os.path.join(DATA_PATH, '_mesh.obj')
 start_time = time.time()
 
 ### --- Load initial_mesh
+print(os.path.dirname(__file__))
 mesh = Mesh.from_obj(os.path.join(DATA_PATH, OBJ_INPUT_NAME))
 
 ### --- Load targets (boundaries)
